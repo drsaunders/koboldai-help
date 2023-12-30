@@ -5,12 +5,17 @@ if [[ -n update ]];then
     git pull --recurse-submodules 
     export PYTHONNOUSERSITE=1
     git submodule update --init --recursive
-    
-    wget -qO- https://anaconda.org/conda-forge/micromamba/1.5.3/download/linux-64/micromamba-1.5.3-0.tar.bz2 | tar -xvj bin/micromamba
-    bin/micromamba create -f environments/huggingface.yml -r /content/runtime -y --prefix /content/env/koboldai
-    # Weird micromamba bug causes it to fail the first time, running it twice just to be safe, the second time is much faster
-    bin/micromamba create -f environments/huggingface.yml -r /content/runtime -y --prefix /content/env/koboldai
-    
+    if [ ! -d "/content/runtime" ]; then
+        echo "Building environment"
+        wget -qO- https://anaconda.org/conda-forge/micromamba/1.5.3/download/linux-64/micromamba-1.5.3-0.tar.bz2 | tar -xvj bin/micromamba
+        bin/micromamba create -f environments/huggingface.yml -r /content/runtime -y --prefix /content/env/koboldai
+        # Weird micromamba bug causes it to fail the first time, running it twice just to be safe, the second time is much faster
+        bin/micromamba create -f environments/huggingface.yml -r /content/runtime -y --prefix /content/env/koboldai
+        echo "Environment built"
+    else
+        echo "Environment already exists"
+    fi
+     
 	git submodule update --init --recursive
 fi
 
