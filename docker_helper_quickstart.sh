@@ -7,9 +7,9 @@ if [[ -n update ]];then
     git submodule update --init --recursive
     
     wget -qO- https://anaconda.org/conda-forge/micromamba/1.5.3/download/linux-64/micromamba-1.5.3-0.tar.bz2 | tar -xvj bin/micromamba
-    bin/micromamba create -f environments/huggingface.yml -r runtime -y --prefix /content/env/koboldai
+    bin/micromamba create -f environments/huggingface.yml -r /content/runtime -y --prefix /content/env/koboldai
     # Weird micromamba bug causes it to fail the first time, running it twice just to be safe, the second time is much faster
-    bin/micromamba create -f environments/huggingface.yml -r runtime -y --prefix /content/env/koboldai
+    bin/micromamba create -f environments/huggingface.yml -r /content/runtime -y --prefix /content/env/koboldai
     
 	git submodule update --init --recursive
 fi
